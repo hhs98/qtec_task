@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %} {% block content %}
+<h3>Latest Courses...</h3>
+<div class="row mt-3">
+  {% for course in courses %}
+  <div class="col">
+    <div class="card border-danger" style="max-width: 14rem">
+      <img
+        src="https://img-b.udemycdn.com/course/240x135/567828_67d0.jpg?secure=QJrwzi_5KvxLoqUXNJdCKQ%3D%3D%2C1604217487"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h6 class="card-title">{{course.title}}</h6>
+        <p class="text-secondary"><small>Author</small></p>
+        <h6 class="text-warning">4.6 ⭐️ ⭐️ ⭐️ ⭐️ ⭐️</h6>
+        <h5>
+          ${{course.cost}}
+          <span class="text-secondary"><del>$129.99</del></span>
+        </h5>
+        <span class="badge bg-warning">Bestseller</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

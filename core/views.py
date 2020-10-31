@@ -1,5 +1,8 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import render
+from .models import *
 
 
 def index(request):
-    return HttpResponse("Hello, world!")
+    courses = Course.objects.all()
+    context = {'courses': courses}
+    return render(request, 'core/index.html', context)
