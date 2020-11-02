@@ -10,7 +10,7 @@
       />
       <div class="card-body">
         <h6 class="card-title">{{course.title}}</h6>
-        <p class="text-secondary"><small>Author</small></p>
+        <p class="text-secondary"><small>{{course.teacher}}</small></p>
         <h6 class="text-warning">4.6 🌟 🌟 🌟 🌟 🌟</h6>
         <h5>
           ${{course.cost}}
@@ -22,7 +22,12 @@
           You are enrolled
         </button>
         {% else %}
-        <button style="width: 100%" class="btn btn-danger">Enroll now</button>
+        <a
+          href="/enroll/{{course.id}}"
+          style="width: 100%"
+          class="btn btn-danger"
+          >Enroll now</a
+        >
         {% endif %}
       </div>
     </div>
@@ -38,5 +43,6 @@
   {% for student in students %}
   <p># {{student.name}}</p>
   <hr />
+  {%endfor%}
 </div>
-{%endfor%} {% endblock content %}
+{% endblock content %}
