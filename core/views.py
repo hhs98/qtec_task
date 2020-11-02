@@ -4,6 +4,8 @@ from django.contrib import messages
 
 from .models import *
 from .forms import *
+from .decorators import unauthenticated_user, teacher_only
+from django.contrib.auth.models import User, Group
 
 
 def index(request):
@@ -15,18 +17,27 @@ def index(request):
 def course_detail(request, pk):
     course = Course.objects.get(id=pk)
     students = course.students.all()
-    hasib = Student.objects.get(pk=request.user.student.id)
+    print(request.user)
     try:
-        if hasib.course_set.get(id=pk):
-            enrolled = True
-        else:
-            enrolled = False
-    except Course.DoesNotExist:
+        if request.user.student:
+            not_student = False
+            hasib = Student.objects.get(pk=request.user.student.id)
+            try:
+                if hasib.course_set.get(id=pk):
+                    enrolled = True
+                else:
+                    enrolled = False
+            except Course.DoesNotExist:
+                enrolled = False
+    except AttributeError:
         enrolled = False
-    context = {'course': course, 'students': students, 'enrolled': enrolled}
+        not_student = True
+    context = {'course': course, 'students': students,
+               'not_student': not_student, 'enrolled': enrolled}
     return render(request, 'core/course_detail.html', context)
 
 
+@teacher_only
 def add_course(request):
     form = CourseForm(initial={'teacher': request.user.teacher.id})
     if request.method == 'POST':
@@ -57,6 +68,7 @@ def enroll(request, pk):
     return redirect(course_detail, pk=pk)
 
 
+@unauthenticated_user
 def login_page(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -72,6 +84,7 @@ def login_page(request):
     return render(request, 'core/login.html')
 
 
+@unauthenticated_user
 def register_student(request):
     form = CreateUserForm()
     studentForm = StudentForm()
@@ -93,6 +106,7 @@ def register_student(request):
     return render(request, 'core/signup.html', context)
 
 
+@unauthenticated_user
 def register_teacher(request):
     form = CreateUserForm()
     teacherForm = StudentForm()
@@ -104,6 +118,8 @@ def register_teacher(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
+            group = Group.objects.get(name='teachers')
+            user.groups.add(group)
             teacher = teacherForm.save(commit=False)
             teacher.user = user
             teacher.save()

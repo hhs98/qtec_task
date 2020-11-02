@@ -17,7 +17,13 @@
           <span class="text-secondary"><del>$129.99</del></span>
         </h5>
         <span class="badge bg-warning mb-3">Bestseller</span><br />
-        {% if enrolled %}
+        {% if not_student %} {%if request.user.groups.exists %}
+        <a
+          href="/update-course/{{course.id}}"
+          style="width: 100%"
+          class="btn btn-primary"
+          >Update course</a
+        >{%endif%} {% else %} {% if enrolled %}
         <button style="width: 100%" class="btn btn-primary">
           You are enrolled
         </button>
@@ -28,7 +34,7 @@
           class="btn btn-danger"
           >Enroll now</a
         >
-        {% endif %}
+        {% endif %} {% endif %}
       </div>
     </div>
   </div>

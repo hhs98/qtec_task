@@ -15,18 +15,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          {%if request.user.is_authenticated%}
+          {%if request.user.is_authenticated%} {%if request.user.teacher%}
           <a class="btn btn-sm btn-primary" href="/add-course">Add Course</a>
-          {%else%}
+          {%endif%} {%else%}
           <a class="text-danger" href="/teacher">Teach on Udemy</a>
           {%endif%}
         </li>
       </ul>
       <form class="d-flex">
-        {%if request.user.is_authenticated%}
+        {%if request.user.is_authenticated%} {% if request.user.is_staff%}
+        <h6>Hello, Admin!</h6>
+        <h6><a href="/admin" class="ml-2 text-success">Dashboard</a></h6>
+        {%else%}
         <h6>
           Hello, {{request.user.student.name}}{{request.user.teacher.name}}!
         </h6>
+        {%endif%}
         <h6><a href="/logout" class="ml-2 text-danger">Log out</a></h6>
         {%else%}
         <a href="/login" class="btn btn-outline-success mr-2" type="submit">
