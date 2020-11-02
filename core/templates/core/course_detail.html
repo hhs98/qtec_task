@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %} {% block content %}
+
+<div class="row">
+  <div class="col">
+    <div class="card border-danger">
+      <img
+        src="https://img-b.udemycdn.com/course/240x135/567828_67d0.jpg?secure=QJrwzi_5KvxLoqUXNJdCKQ%3D%3D%2C1604217487"
+        alt="..."
+        width="300px"
+      />
+      <div class="card-body">
+        <h6 class="card-title">{{course.title}}</h6>
+        <p class="text-secondary"><small>Author</small></p>
+        <h6 class="text-warning">4.6 🌟 🌟 🌟 🌟 🌟</h6>
+        <h5>
+          ${{course.cost}}
+          <span class="text-secondary"><del>$129.99</del></span>
+        </h5>
+        <span class="badge bg-warning mb-3">Bestseller</span><br />
+        {% if enrolled %}
+        <button style="width: 100%" class="btn btn-primary">
+          You are enrolled
+        </button>
+        {% else %}
+        <button style="width: 100%" class="btn btn-danger">Enroll now</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <h5 class="mb-5">Course Contents...</h5>
+    <p>{{course.contents|linebreaks}}</p>
+  </div>
+</div>
+<div class="row mt-3">
+  <h5>Enrolled Students...</h5>
+  <hr />
+  {% for student in students %}
+  <p># {{student.name}}</p>
+  <hr />
+</div>
+{%endfor%} {% endblock content %}
