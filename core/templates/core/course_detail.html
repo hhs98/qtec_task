@@ -18,12 +18,15 @@
         </h5>
         <span class="badge bg-warning mb-3">Bestseller</span><br />
         {% if not_student %} {%if request.user.groups.exists %}
+        <span></span>
+        {%ifequal course.teacher.id request.user.teacher.id %}
         <a
           href="/update-course/{{course.id}}"
           style="width: 100%"
           class="btn btn-primary"
           >Update course</a
-        >{%endif%} {% else %} {% if enrolled %}
+        >
+        {%endifequal%}{%endif%} {% else %} {% if enrolled %}
         <button style="width: 100%" class="btn btn-primary">
           You are enrolled
         </button>

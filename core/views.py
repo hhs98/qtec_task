@@ -49,8 +49,11 @@ def add_course(request):
     return render(request, 'core/add_course.html', context)
 
 
+@teacher_only
 def update_course(request, pk):
     course = Course.objects.get(id=pk)
+    if not course.teacher.id == request.user.teacher.id:
+        return redirect('/')
     form = CourseForm(instance=course)
     if request.method == 'POST':
         form = CourseForm(request.POST, instance=course)
